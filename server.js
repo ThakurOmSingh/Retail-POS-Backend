@@ -11,7 +11,7 @@ const corsOptions = {
 
 const app = express()
 app.use(express.json());
-app.use(cors(corsOption)); 
+app.use(cors(corsOptions)); 
 
 const itemsRoute =require('./routes/itemsRoute')
 app.use('/api/items/',itemsRoute )
