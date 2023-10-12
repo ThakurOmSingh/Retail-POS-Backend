@@ -78,7 +78,8 @@ router.post('/charge-bill', async (req, res) => {
         res.status(200).send('Billing done successfully, PDF generated and email sent');
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: 'Internal Server Error' });
+        res.status(500).json({ error: 'Internal Server Error', details: error.message });
+
     }
 });
 
