@@ -4,14 +4,14 @@ var cors = require('cors')
 const dbconnect = require('./dbConnect')
 const env = require('dotenv')
 
-const corsOptions = {
-  origin: ['https://retail-pos-app.onrender.com', 'http://localhost:3000'],
+// const corsOptions = {
+//   origin: ['https://retail-pos-app.onrender.com', 'http://localhost:3000'],
   
-};
+// };
 
 const app = express()
 app.use(express.json());
-app.use(cors(corsOptions)); 
+app.use(cors()); 
 
 const itemsRoute =require('./routes/itemsRoute')
 app.use('/api/items/',itemsRoute )
