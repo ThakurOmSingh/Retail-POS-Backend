@@ -41,7 +41,9 @@ if (existingCustomer) {
 
     const filePath = path.join(folderPath, fileName);
 
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({
+  headless: "new",
+});
     const page = await browser.newPage();
     await page.setContent(pdfTemplate(req.body)); // Set your HTML content here
     const pdfBuffer = await page.pdf();
