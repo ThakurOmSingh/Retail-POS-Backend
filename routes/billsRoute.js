@@ -21,7 +21,7 @@ router.post("/charge-bill",async(req,res) => {
 if (existingCustomer) {
     const newbill = new BillModel(req.body);
     await newbill.save()
-    // res.send('Billing done successfully')
+    res.send('Billing done successfully')
 } else {
     const newcustomer = new CustomersModel({customerName: customerName , customerPhoneNumber: customerPhoneNumber , customerEmail: customerEmail});
     await newcustomer.save()
