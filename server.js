@@ -4,15 +4,16 @@ var cors = require('cors')
 const dbconnect = require('./dbConnect')
 const env = require('dotenv')
 
-// const corsOptions = {
-//   origin: 'https://retail-pos-app.onrender.com',
-//   credentials: true, // Allow credentials (cookies, HTTP authentication)
-//   allowedHeaders: 'Content-Type,Authorization', // Specify custom headers
-// };
+const corsOptions = {
+  origin: ['https://retail-pos-app.onrender.com', 'http://localhost:3000'],
+  credentials: true, // Allow credentials (cookies, HTTP authentication)
+  allowedHeaders: 'Content-Type, Authorization', // Specify custom headers
+  methods: 'GET, PUT, POST, DELETE' // Specify which HTTP methods are allowed
+};
 
 const app = express()
 app.use(express.json());
-app.use(cors()); 
+app.use(cors(corsOptions)); 
 
 const itemsRoute =require('./routes/itemsRoute')
 app.use('/api/items/',itemsRoute )
