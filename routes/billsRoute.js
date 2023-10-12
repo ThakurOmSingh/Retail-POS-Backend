@@ -42,7 +42,7 @@ if (existingCustomer) {
     const filePath = path.join(folderPath, fileName);
 
     const browser = await puppeteer.launch({
-  headless: "new",
+  headless: true,
 });
     const page = await browser.newPage();
     await page.setContent(pdfTemplate(req.body)); // Set your HTML content here
