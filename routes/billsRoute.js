@@ -49,7 +49,7 @@ if (existingCustomer) {
         pdf.create(pdfTemplate(req.body), {}).toFile(filePath, (err) => {
             if (err) {
                 console.log(err);
-                res.status(500).send('Error generating PDF');
+                res.status(500).send('Error generating PDF',err);
             } else {
                 const pathToAttachment = path.join(__dirname, 'invoice', fileName);
                 const attachment = fs.readFileSync(pathToAttachment).toString("base64");
