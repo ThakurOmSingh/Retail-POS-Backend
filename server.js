@@ -6,9 +6,7 @@ const env = require('dotenv')
 
 const corsOptions = {
   origin: ['https://retail-pos-app.onrender.com', 'http://localhost:3000'],
-  credentials: true, // Allow credentials (cookies, HTTP authentication)
-  allowedHeaders: 'Content-Type, Authorization', // Specify custom headers
-  methods: 'GET, PUT, POST, DELETE' // Specify which HTTP methods are allowed
+  
 };
 
 const app = express()
