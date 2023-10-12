@@ -3,7 +3,8 @@ const express = require("express");
 const BillModel = require('../models/billModel')
 const CustomersModel = require('../models/customermodel')
 const router = express.Router();
-const pdf = require('html-pdf')
+const puppeteer = require('puppeteer');
+
 const path = require('path')
 const nodemailer = require('nodemailer')
 const fs = require('fs')
@@ -30,30 +31,29 @@ if (existingCustomer) {
     
     
     }       
-
     const timestamp = new Date().toISOString().replace(/[-T:.Z]/g, '');
-        const fileName = `invoice_${timestamp}.pdf`;
+    const fileName = `invoice_${timestamp}.pdf`;
+    const folderPath = path.join(__dirname, 'invoice');
 
-        // Specify the folder path where you want to store the PDF files
-        const folderPath = path.join(__dirname, 'invoice');
+    if (!fs.existsSync(folderPath)) {
+        fs.mkdirSync(folderPath);
+    }
 
-        // Create the folder if it doesn't exist
-        if (!fs.existsSync(folderPath)) {
-            fs.mkdirSync(folderPath);
-        }
+    const filePath = path.join(folderPath, fileName);
 
-        const filePath = path.join(folderPath, fileName);
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
+    await page.setContent(pdfTemplate(req.body)); // Set your HTML content here
+    const pdfBuffer = await page.pdf();
+    await browser.close();
+
+    fs.writeFileSync(filePath, pdfBuffer);
+
+    const pathToAttachment = path.join(__dirname, 'invoice', fileName);
+    const attachment = fs.readFileSync(pathToAttachment).toString("base64");
 
 
-
-        pdf.create(pdfTemplate(req.body), {}).toFile(filePath, (err) => {
-            if (err) {
-                console.log(err);
-                res.status(500).send('Error generating PDF');
-            } else {
-                const pathToAttachment = path.join(__dirname, 'invoice', fileName);
-                const attachment = fs.readFileSync(pathToAttachment).toString("base64");
-
+      
                 const smtpTransport = nodemailer.createTransport({
                     host: 'smtp.gmail.com',
                     service: 'Gmail',
@@ -85,8 +85,8 @@ if (existingCustomer) {
                         res.status(200).send('Billing done successfully, PDF generated and email sent');
                     }
                 });
-            }
-        });
+            
+        
     } catch (error) {
         res.status(400).json(error);
         console.log("error in routes");
