@@ -27,66 +27,67 @@ if (existingCustomer) {
     await newcustomer.save()
         const newbill = new BillModel(req.body);
         await newbill.save()
-        // res.send('Billing done successfully')
+        res.send('Billing done successfully')
+}
     
     
-    }       
-    const timestamp = new Date().toISOString().replace(/[-T:.Z]/g, '');
-    const fileName = `invoice_${timestamp}.pdf`;
-    const folderPath = path.join(__dirname, 'invoice');
+//           
+//     const timestamp = new Date().toISOString().replace(/[-T:.Z]/g, '');
+//     const fileName = `invoice_${timestamp}.pdf`;
+//     const folderPath = path.join(__dirname, 'invoice');
 
-    if (!fs.existsSync(folderPath)) {
-        fs.mkdirSync(folderPath);
-    }
+//     if (!fs.existsSync(folderPath)) {
+//         fs.mkdirSync(folderPath);
+//     }
 
-    const filePath = path.join(folderPath, fileName);
+//     const filePath = path.join(folderPath, fileName);
 
-    const browser = await puppeteer.launch({
-  headless: true,
-});
-    const page = await browser.newPage();
-    await page.setContent(pdfTemplate(req.body)); // Set your HTML content here
-    const pdfBuffer = await page.pdf();
-    await browser.close();
+//     const browser = await puppeteer.launch({
+//   headless: true,
+// });
+//     const page = await browser.newPage();
+//     await page.setContent(pdfTemplate(req.body)); // Set your HTML content here
+//     const pdfBuffer = await page.pdf();
+//     await browser.close();
 
-    fs.writeFileSync(filePath, pdfBuffer);
+//     fs.writeFileSync(filePath, pdfBuffer);
 
-    const pathToAttachment = path.join(__dirname, 'invoice', fileName);
-    const attachment = fs.readFileSync(pathToAttachment).toString("base64");
+//     const pathToAttachment = path.join(__dirname, 'invoice', fileName);
+//     const attachment = fs.readFileSync(pathToAttachment).toString("base64");
 
 
       
-                const smtpTransport = nodemailer.createTransport({
-                    host: 'smtp.gmail.com',
-                    service: 'Gmail',
-                    port: 587,
-                    secure: false,
-                    auth: {
-                        user:process.env.USER,
-                        pass:process.env.PASSWORD
-                    },
-                    // tls: { rejectUnauthorized: false }
-                });
+//                 const smtpTransport = nodemailer.createTransport({
+//                     host: 'smtp.gmail.com',
+//                     service: 'Gmail',
+//                     port: 587,
+//                     secure: false,
+//                     auth: {
+//                         user:process.env.USER,
+//                         pass:process.env.PASSWORD
+//                     },
+//                     // tls: { rejectUnauthorized: false }
+//                 });
 
-                smtpTransport.sendMail({
-                    from: "luvkush.sitaram12345@gmail.com",
-                    to: customerEmail,
-                    subject: 'ABC store Bill',
-                    html: "<h1>Please find below the attached bill</h1>",
-                    attachments: [{
-                        content: attachment,
-                        filename: "Invoice.pdf",
-                        encoding: 'base64'
-                    }]
-                }, function (error, info) {
-                    if (error) {
-                        console.log(error);
-                        res.status(500).send('Error sending email');
-                    } else {
-                        console.log("MAIL SENT")
-                        res.status(200).send('Billing done successfully, PDF generated and email sent');
-                    }
-                });
+//                 smtpTransport.sendMail({
+//                     from: "luvkush.sitaram12345@gmail.com",
+//                     to: customerEmail,
+//                     subject: 'ABC store Bill',
+//                     html: "<h1>Please find below the attached bill</h1>",
+//                     attachments: [{
+//                         content: attachment,
+//                         filename: "Invoice.pdf",
+//                         encoding: 'base64'
+//                     }]
+//                 }, function (error, info) {
+//                     if (error) {
+//                         console.log(error);
+//                         res.status(500).send('Error sending email');
+//                     } else {
+//                         console.log("MAIL SENT")
+//                         res.status(200).send('Billing done successfully, PDF generated and email sent');
+//                     }
+//                 });
             
         
     } catch (error) {
