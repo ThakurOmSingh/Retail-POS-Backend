@@ -4,9 +4,15 @@ var cors = require('cors')
 const dbconnect = require('./dbConnect')
 const env = require('dotenv')
 
+const corsOptions = {
+  origin: 'https://retail-pos-app.onrender.com',
+  credentials: true, // Allow credentials (cookies, HTTP authentication)
+  allowedHeaders: 'Content-Type,Authorization', // Specify custom headers
+};
+
 const app = express()
 app.use(express.json());
-app.use(cors()); 
+app.use(cors(corsOptions)); 
 
 const itemsRoute =require('./routes/itemsRoute')
 app.use('/api/items/',itemsRoute )
@@ -24,7 +30,7 @@ if(process.env.NODE_ENV==='production')
 {
     app.use('/', express.static('client/build'))
     app.get('*', (req,res)=>{
-        res.sendFile(path.resolve(__dirname, 'client/build/index.html'))
+        // res.sendFile(path.resolve(__dirname, 'client/build/index.html'))
     })
 }
 const port = process.env.PORT || 5000
