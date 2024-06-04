@@ -62,7 +62,7 @@ router.post("/register",async(req,res) => {
             name: name, 
             userId : userId,
             password : userpassowrd,
-            verified:false})
+            verified:true})
         await newuser.save();
         res.send('User Registered successfully');
     } catch (error) {
